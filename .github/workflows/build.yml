@@ -1,0 +1,32 @@
+name: Build BOM Converter EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install -r requirements.txt
+
+      - name: EXE 빌드
+        run: pyinstaller --onefile --windowed --name=BOM_Converter BOM_Converter.py
+
+      - name: EXE 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOM_Converter_EXE
+          path: dist/BOM_Converter.exe
+          retention-days: 30
