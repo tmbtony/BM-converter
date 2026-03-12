@@ -1,0 +1,6 @@
+pdfplumber
+python-docx
+openpyxl
+xlrd
+requests
+pyinstaller
