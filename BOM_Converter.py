@@ -19,7 +19,7 @@ try:    from docx import Document
 except: Document = None
 
 # ──────────────────────────────────────────────
-CURRENT_VERSION = "1.0.0"
+CURRENT_VERSION = "1.0.2"
 BASE_DIR  = os.path.dirname(sys.executable if getattr(sys,'frozen',False) else __file__)
 KEY_FILE  = os.path.join(BASE_DIR, "api_key.txt")  # EXE 옆에 저장
 
@@ -65,13 +65,19 @@ Each item must have these exact fields:
   FORGED FITTING (except WOL): 3000#,6000#,9000#. "" if unknown.
   BW FITTING and WOL:
     Schedule: STD,X-S,XX-S(keep dash), S10S,S20,S30,S40,S60,S80,S100,S120,S140,S160(remove dash e.g.S-40->S40)
+    Thickness unit determination (CRITICAL - apply always):
+      If unit is explicitly stated -> use it (e.g. "9.53mm"->9.53, "1.094in"->1.094")
+      If unit is NOT stated -> determine by value range:
+        Value < 4.0 -> INCH -> MUST append " (e.g. 2.265->2.265", 0.872->0.872", 1.622->1.622", 3.5->3.5")
+        Value >= 4.0 -> MM  -> no " (e.g. 9.53->9.53, 12.70->12.70, 25.40->25.40)
+      ALWAYS ensure inch values end with " - NEVER output bare number for inch thickness.
     mm thickness (NO mwt keyword): xx.xx (e.g. 9.53, 12.70)
-    inch thickness (NO mwt keyword): x.xxx" (e.g. 0.787", 1.000")
+    inch thickness (NO mwt keyword): ALWAYS append " (e.g. 0.787", 1.000", 2.265")
     ONLY if BOM has "min wall","minimum wall","mwt","mw","minimum wall thickness": "x.xxx\" MWT" or "xx.xx MWT". NEVER add MWT otherwise.
     WOL: MUST have schedule. Ignore # rating for WELDOLET (design pressure only). sch1="MISSING" if no schedule.
     "" if unknown.
 - sch2:
-  WNRF/WNRTJ/SWRF/SWRTJ/ORIFICE WNRF/ORIFICE WNRTJ: schedule/thickness (same as BW sch1 rules). "MISSING" if not provided.
+  WNRF/WNRTJ/SWRF/SWRTJ/ORIFICE WNRF/ORIFICE WNRTJ: schedule/thickness (same as BW sch1 rules including " rule). "MISSING" if not provided.
   BW FITTING reducing (CR/ER): secondary sch. "" otherwise.
   Others: ""
 - type:
@@ -372,4 +378,3 @@ class BOMConverter(tk.Tk):
 if __name__ == "__main__":
     app = BOMConverter()
     app.mainloop()
-
