@@ -55,8 +55,8 @@ Each item must have these exact fields:
   FORGED FITTING: 90 ELBOW, 45 ELBOW, TEE, F-CPLG, H-CPLG, NIPPLE, CSN, ESN,
                   WOL, SOL, TOL, NOL, LOL, EOL, FLANGEOLET, NIPOFLANGE, WELDOFLANGE
 - size1, size2:
-  Fractions: 0.25->1/4, 0.5->1/2, 0.75->3/4, 1.25->1-1/4, 1.5->1-1/2, 2.5->2-1/2, 3.5->3-1/2
-  DN: DN25=1,DN32=1-1/4,DN40=1-1/2,DN50=2,DN65=2-1/2,DN80=3,DN100=4,DN125=5,DN150=6,DN200=8,DN250=10,DN300=12
+  Fractions: 0.25->¼, 0.5->½, 0.75->¾, 1.25->1¼, 1.5->1½, 2.5->2½, 3.5->3½
+  DN: DN25=1,DN32=1¼,DN40=1½,DN50=2,DN65=2½,DN80=3,DN100=4,DN125=5,DN150=6,DN200=8,DN250=10,DN300=12
   FLANGE size2: "" default. Only fill if REDUCING FLANGE with two DIFFERENT sizes. Same size repeated (e.g.24/24) -> size2=""
   BW FITTING size2: reducing items (ER,CR,reducing TEE,SPECTACLE BL) only.
   OLET size2: size1=larger(header), size2=smaller(branch). "MISSING" if not provided.
@@ -372,3 +372,4 @@ class BOMConverter(tk.Tk):
 if __name__ == "__main__":
     app = BOMConverter()
     app.mainloop()
+
